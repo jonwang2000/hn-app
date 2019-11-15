@@ -11,6 +11,7 @@ services:
       - ./app/static:/home/node/dist
     environment:
       - LOG_FORMAT=dev
+      - NODE_ENV
       - SPA_BASE_URL=http://localhost:$APP_PORT
       - API_BASE_URL=http://localhost:$API_PORT
       - INTERNAL_API_BASE_URL=http://api:8000
@@ -28,11 +29,11 @@ services:
     environment:
       - API_BASE_URL=http://localhost:$API_PORT
       - APP_BASE_URL=http://localhost:$APP_PORT
-      - DEBUG=feathers-react-starter:*
+      - DEBUG=dicom-ml-forward:*
       - LOG_FORMAT=dev
-      - POSTGRES_DB=project-name
+      - POSTGRES_DB=dcm
       - POSTGRES_HOST=postgres
-      - POSTGRES_USER=project-name
+      - POSTGRES_USER=dcm
     env_file:
       - ./api/secrets/POSTGRES_PASSWORD
     ports:
@@ -46,9 +47,9 @@ services:
   postgres:
     image: postgres:9.6
     environment:
-      - POSTGRES_DB=project-name
+      - POSTGRES_DB=dcm
       - POSTGRES_HOST=postgres
-      - POSTGRES_USER=project-name
+      - POSTGRES_USER=dcm
     env_file:
       - ./api/secrets/POSTGRES_PASSWORD
     volumes:
