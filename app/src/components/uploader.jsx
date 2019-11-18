@@ -5,7 +5,7 @@ import CloudUploadIcon from '@material-ui/icons/CloudUpload'
 import { withStyles } from '@material-ui/core/styles'
 import Button from '@material-ui/core/Button'
 
-import responsive from 'FRS/components/responsive.jsx'
+import responsive from 'DMF/components/responsive.jsx'
 
 const baseStyle = {
   flex: 1,
@@ -38,31 +38,31 @@ const styles = theme => ({
 @responsive
 export default class Uploader extends Component {
   render() {
-    const { classes, onDrop } = this.props
+    const { classes, onDrop, buttonText, uploadText, displayZone=true } = this.props
 
     const textStyle = {
       fontFamily: 'Roboto, Arial, Helvetica, sans-serif',
-      fontSize: 22,
+      fontSize: 20,
       fontWeight: 100,
+      marginBottom: 20,
+      textAlign: 'center'
     }
 
     return (
       <div style={{ padding: '0 20px' }}>
-        <Dropzone multiple onDrop={onDrop}>
+        <Dropzone multiple={false} onDrop={onDrop}>
           {({ getRootProps, getInputProps, isDragActive }) => {
-            const style = { ...baseStyle, ...(isDragActive ? activeStyle : {})}
+            const style = displayZone ? { ...baseStyle, ...(isDragActive ? activeStyle : {})} : {}
 
             return (
               <div {...getRootProps({ style })}>
                 <input {...getInputProps()} />
-                <p style={textStyle}>Drop files here...</p>
-                <Button
-                  variant="contained"
-                  style={{ backgroundColor: '#47769f', boxShadow: 'none', color: '#fff' }}
-                >
-                  Select Files
-                  &nbsp;
-                  <CloudUploadIcon className={classes.rightIcon} />
+                {displayZone
+                  ? <div style={textStyle}>{uploadText ? uploadText : 'Drop file here...'}</div>
+                  : null
+                }
+                <Button variant="contained" style={{ backgroundColor: '#47769f', boxShadow: 'none', color: '#fff' }} size="small">
+                  {buttonText ? buttonText : 'Select File'}
                 </Button>
               </div>
             )

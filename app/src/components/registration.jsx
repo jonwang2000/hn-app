@@ -4,8 +4,8 @@ import Button from '@material-ui/core/Button'
 import TextField from '@material-ui/core/TextField'
 import Snackbar from '@material-ui/core/Snackbar'
 
-import app from 'FRS/feathers-client.js'
-import responsive from 'FRS/components/responsive.jsx'
+import app from 'DMF/feathers-client.js'
+import responsive from 'DMF/components/responsive.jsx'
 
 
 @responsive
