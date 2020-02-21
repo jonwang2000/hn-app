@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react'
-import includes from 'lodash/includes'
-
-import withWidth from '@material-ui/core/withWidth'
 
 import Paper from '@material-ui/core/Paper'
 import Snackbar from '@material-ui/core/Snackbar'
 
 import app from 'DMF/feathers-client.js'
+
+import useResponsive from 'DMF/hooks/useResponsive'
+import Login from 'DMF/components/login.jsx'
 
 const App = props => {
   const [isAuthenticated, setIsAuthenticated] = useState(false)
@@ -14,7 +14,23 @@ const App = props => {
   const [snackBarOpen, setSnackBarOpen] = useState(false)
   const [snackBarMessage, setSnackBarMessage] = useState(null)
 
-  const onMobile = includes(['xs', 'sm'], props.width)
+  console.log(onMobile)
+
+  const onMobile = props.onMobile
+
+  // Replaces componentDidMount
+  useEffect(() => {
+    app.authentication
+      .getAccessToken()
+      .then(accessToken => {
+        if (accessToken) {
+          return app
+            .reAuthenticate()
+            .then(() => setIsAuthenticated(true))
+        }
+      })
+      .then(() => setIsLoading(false))
+  }, [])
 
   const authenticate = options => {
     return app
@@ -31,39 +47,6 @@ const App = props => {
 
   const handleCloseSnackBar = () => setSnackBarOpen(false)
 
-  // Replaces componentDidMount
-  useEffect(() => {
-    app.authentication
-      .getAccessToken()
-      .then(accessToken => {
-        if (accessToken) {
-          return app
-            .reAuthenticate()
-            .then(() => setIsAuthenticated(true))
-        }
-      })
-      .then(() => setIsLoading(false))
-  }, [])
-
-  const renderLogin = () => {
-    const textStyle = {
-      fontFamily: 'Roboto, Arial, Helvetica, sans-serif',
-      fontSize: 16,
-      fontWeight: 400,
-      textAlign: 'left',
-      marginBottom: 10
-    }
-
-    return (
-      <div>
-        <div style={textStyle}>
-          <p>login</p>
-        </div>
-      </div>
-    )
-  }
-
-  console.log(props)
   return (
     <div
       style={{
@@ -106,10 +89,10 @@ const App = props => {
         >
           HN App
         </div>
-        {renderLogin()}
+        <Login />
       </Paper>
     </div>
   )
 }
 
-export default withWidth()(App)
+export default useResponsive()(App)
