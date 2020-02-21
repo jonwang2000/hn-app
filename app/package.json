@@ -19,7 +19,7 @@
     "@feathersjs/configuration": "^4.3.0",
     "@feathersjs/errors": "^4.3.7",
     "@feathersjs/express": "^4.3.0",
-    "@feathersjs/feathers": "^4.3.7",
+    "@feathersjs/feathers": "^4.5.1",
     "@feathersjs/rest-client": "^4.3.7",
     "@material-ui/core": "^4.4.2",
     "@material-ui/icons": "^4.4.1",
@@ -30,7 +30,7 @@
     "isomorphic-fetch": "^2.2.1",
     "lodash": "^4.17.15",
     "moment": "^2.24.0",
-    "react": "16.8.0",
+    "react": "^16.12.0",
     "react-dom": "16.8.0",
     "react-dropzone": "^10.1.10",
     "terser-webpack-plugin": "^2.2.1"
