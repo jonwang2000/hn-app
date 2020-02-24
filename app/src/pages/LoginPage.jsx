@@ -2,30 +2,32 @@ import React, { useState, useEffect } from 'react'
 
 import { Redirect } from 'react-router-dom'
 
+import Button from '@material-ui/core/Button'
 import Paper from '@material-ui/core/Paper'
 import Snackbar from '@material-ui/core/Snackbar'
-import Button from '@material-ui/core/Button'
+import Typography from '@material-ui/core/Typography'
 
 import app from 'DMF/feathers-client.js'
 
 import useResponsive from 'DMF/hooks/useResponsive'
 import Login from 'DMF/components/Login.jsx'
+import Registration from 'DMF/components/Registration.jsx'
 
 const LoginPage = props => {
   const [isAuthenticated, setIsAuthenticated] = useState(false)
-  const [isLoading, setIsLoading] = useState(true)
   const [snackBarOpen, setSnackBarOpen] = useState(false)
   const [snackBarMessage, setSnackBarMessage] = useState(null)
+  const [showRegister, setShowRegister] = useState(false)
 
   const onMobile = props.onMobile
 
   // Replaces componentDidMount
   useEffect(() => {
-    app.authentication
-      .getAccessToken()
-      .then(accessToken => {
-        accessToken ? app.reAuthenticate().then(() => setIsAuthenticated(true)) : setIsAuthenticated(false)
-      })
+    app.authentication.getAccessToken().then(accessToken => {
+      accessToken
+        ? app.reAuthenticate().then(() => setIsAuthenticated(true))
+        : setIsAuthenticated(false)
+    })
   }, [])
 
   const authenticate = options => {
@@ -57,8 +59,7 @@ const LoginPage = props => {
         width: '100%',
         overflow: 'hidden',
         position: 'absolute'
-      }}
-    >
+      }}>
       <Snackbar
         anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
         open={snackBarOpen}
@@ -75,22 +76,24 @@ const LoginPage = props => {
           ...(onMobile
             ? { height: '100%', width: '100%', overflow: 'scroll' }
             : { width: 500 })
-        }}
-      >
-        <div
-          style={{
-            fontFamily: 'Roboto, Arial, Helvetica, sans-serif',
-            fontSize: 28,
-            fontWeight: 700,
-            textAlign: 'center',
-            marginTop: onMobile ? 10 : 20,
-            marginBottom: onMobile ? 10 : 40
-          }}
-        >
-          HN App
-        </div>
-        {isAuthenticated ? <h1>Logged In</h1> : <h2>Not logged in</h2>}
-        <Login authenticate={authenticate} />
+        }}>
+        <Typography align='center' variant='h2' style={{ padding: '20px' }}>HN App</Typography>
+        {showRegister ? (
+          <Registration authenticate={authenticate} />
+        ) : (
+          <div>
+            <Login authenticate={authenticate} />
+            <div style={{ padding: '0px 20px' }}>
+              <Button
+                onClick={() => setShowRegister(true)}
+                variant='contained'
+                color='primary'
+                style={{ width: '100%' }}>
+                Register New User
+              </Button>
+            </div>
+          </div>
+        )}
       </Paper>
     </div>
   )
