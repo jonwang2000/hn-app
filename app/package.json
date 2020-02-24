@@ -1,6 +1,6 @@
 {
   "name": "hn-app-app",
-  "version": "0.4.0",
+  "version": "0.0.1",
   "license": "MIT",
   "description": "Sample project with feathers and react",
   "main": "index.js",

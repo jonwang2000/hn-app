@@ -93,6 +93,13 @@ const Registration = props => {
             Sign Up
           </Button>
         </div>
+        <Button
+          onClick={() => window.history.go(-1)}
+          color='primary'
+          variant='contained'
+          style={{ width: '100%' }}>
+          Back
+        </Button>
       </form>
     </div>
   )

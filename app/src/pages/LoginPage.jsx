@@ -1,6 +1,12 @@
 import React, { useState, useEffect } from 'react'
 
-import { Redirect } from 'react-router-dom'
+import {
+  Redirect,
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Link
+} from 'react-router-dom'
 
 import Button from '@material-ui/core/Button'
 import Paper from '@material-ui/core/Paper'
@@ -17,7 +23,6 @@ const LoginPage = props => {
   const [isAuthenticated, setIsAuthenticated] = useState(false)
   const [snackBarOpen, setSnackBarOpen] = useState(false)
   const [snackBarMessage, setSnackBarMessage] = useState(null)
-  const [showRegister, setShowRegister] = useState(false)
 
   const onMobile = props.onMobile
 
@@ -49,6 +54,31 @@ const LoginPage = props => {
     return <Redirect to='/' />
   }
 
+  const renderForms = () => {
+    return (
+      <Router>
+        <Switch>
+          <Route path='/register'>
+            <Registration authenticate={authenticate} />
+          </Route>
+          <Route path='/'>
+            <Login authenticate={authenticate} />
+            <div style={{ padding: '5px 20px' }}>
+              <Link to='/register' style={{ textDecoration: 'none' }}>
+                <Button
+                  variant='contained'
+                  color='primary'
+                  style={{ width: '100%' }}>
+                  Register New User
+                </Button>
+              </Link>
+            </div>
+          </Route>
+        </Switch>
+      </Router>
+    )
+  }
+
   return (
     <div
       style={{
@@ -77,23 +107,10 @@ const LoginPage = props => {
             ? { height: '100%', width: '100%', overflow: 'scroll' }
             : { width: 500 })
         }}>
-        <Typography align='center' variant='h2' style={{ padding: '20px' }}>HN App</Typography>
-        {showRegister ? (
-          <Registration authenticate={authenticate} />
-        ) : (
-          <div>
-            <Login authenticate={authenticate} />
-            <div style={{ padding: '0px 20px' }}>
-              <Button
-                onClick={() => setShowRegister(true)}
-                variant='contained'
-                color='primary'
-                style={{ width: '100%' }}>
-                Register New User
-              </Button>
-            </div>
-          </div>
-        )}
+        <Typography align='center' variant='h3' style={{ padding: '20px' }}>
+          HN App
+        </Typography>
+        {renderForms()}
       </Paper>
     </div>
   )
