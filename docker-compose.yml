@@ -29,7 +29,7 @@ services:
     environment:
       - API_BASE_URL=http://localhost:$API_PORT
       - APP_BASE_URL=http://localhost:$APP_PORT
-      - DEBUG=dicom-ml-forward:*
+      - DEBUG=hn-app:*
       - LOG_FORMAT=dev
       - POSTGRES_DB=dcm
       - POSTGRES_HOST=postgres
