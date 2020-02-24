@@ -24,11 +24,8 @@ const LoginPage = props => {
     app.authentication
       .getAccessToken()
       .then(accessToken => {
-        if (accessToken) {
-          return app.reAuthenticate().then(() => setIsAuthenticated(true))
-        }
+        accessToken ? app.reAuthenticate().then(() => setIsAuthenticated(true)) : setIsAuthenticated(false)
       })
-      .then(() => setIsLoading(false))
   }, [])
 
   const authenticate = options => {
