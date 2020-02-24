@@ -8,7 +8,6 @@ import app from 'DMF/feathers-client.js'
 
 const HomePage = props => {
   const [isAuthenticated, setIsAuthenticated] = useState(true)
-  const [isLoading, setIsLoading] = useState(true)
 
   const handleLogOut = () => {
     app.logout()
@@ -21,7 +20,6 @@ const HomePage = props => {
       .then(accessToken => {
         accessToken ? app.reAuthenticate().then(() => setIsAuthenticated(true)) : setIsAuthenticated(false)
       })
-      .then(() => setIsLoading(false))
   }, [])
 
   if (!isAuthenticated) {
