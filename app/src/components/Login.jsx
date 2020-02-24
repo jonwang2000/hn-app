@@ -23,38 +23,42 @@ const Login = props => {
 
   return (
     <div style={{ padding: '0 20px' }}>
-      <TextField
-        fullWidth
-        required
-        id="email-local"
-        label="Email"
-        margin="normal"
-        onChange={event => setEmail(event.target.value)}
-        type="email"
-        variant="outlined"
-        value={email}
-      />
-      <TextField
-        fullWidth
-        required
-        id="password-local"
-        label="Password"
-        margin="normal"
-        onChange={event => setPassword(event.target.value)}
-        type="password"
-        variant="outlined"
-        value={password}
-      />
-      <div style={{ textAlign: 'center', marginBottom: 20, marginTop: 16 }}>
-        <Button
-          variant="contained"
-          color="secondary"
-          onClick={handleAuth}
-          style={{ width: '100%' }}
-        >
-          Login
-        </Button>
-      </div>
+      <form>
+        <TextField
+          fullWidth
+          required
+          id="email-local"
+          label="Email"
+          margin="normal"
+          onChange={event => setEmail(event.target.value)}
+          type="email"
+          autoComplete="email"
+          variant="outlined"
+          value={email}
+        />
+        <TextField
+          fullWidth
+          required
+          id="password-local"
+          label="Password"
+          margin="normal"
+          onChange={event => setPassword(event.target.value)}
+          type="password"
+          autoComplete="current-password"
+          variant="outlined"
+          value={password}
+        />
+        <div style={{ textAlign: 'center', marginBottom: 20, marginTop: 16 }}>
+          <Button
+            variant="contained"
+            color="secondary"
+            onClick={handleAuth}
+            style={{ width: '100%' }}
+          >
+            Login
+          </Button>
+        </div>
+      </form>
     </div>
   )
 }
