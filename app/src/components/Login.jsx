@@ -1,4 +1,4 @@
-import React, { useState, Component } from 'react'
+import React, { useState, useEffect } from 'react'
 
 import Button from '@material-ui/core/Button'
 import TextField from '@material-ui/core/TextField'
@@ -10,6 +10,16 @@ const Login = props => {
   const [password, setPassword] = useState('')
 
   const { authenticate } = props
+
+  useEffect(() => {
+    const listener = e => {
+      e.code === 'Enter' ? handleAuth() : null
+    }
+    document.addEventListener('keydown', listener)
+    return () => document.removeEventListener('keydown', listener)
+  }, [email, password])
+
+  const handleAuth = () => authenticate({ email, password })
 
   return (
     <div style={{ padding: '0 20px' }}>
@@ -39,7 +49,7 @@ const Login = props => {
         <Button
           variant="contained"
           color="secondary"
-          onClick={() => authenticate({ email, password })}
+          onClick={handleAuth}
           style={{ width: '100%' }}
         >
           Login
