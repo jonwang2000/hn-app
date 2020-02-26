@@ -24,7 +24,7 @@ const LoginPage = props => {
   const [snackBarOpen, setSnackBarOpen] = useState(false)
   const [snackBarMessage, setSnackBarMessage] = useState(null)
 
-  const onMobile = props.onMobile
+  const { onMobile } = props
 
   // Replaces componentDidMount
   useEffect(() => {

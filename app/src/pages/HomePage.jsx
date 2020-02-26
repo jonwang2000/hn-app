@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 
-import { Redirect } from 'react-router-dom'
+import { Route, Switch, Redirect, withRouter } from 'react-router-dom'
 
 import Button from '@material-ui/core/Button'
 import Paper from '@material-ui/core/Paper'
@@ -9,14 +9,15 @@ import Typography from '@material-ui/core/Typography'
 import app from 'DMF/feathers-client.js'
 import useResponsive from 'DMF/hooks/useResponsive'
 
-const HomePage = props => {
-  const [isAuthenticated, setIsAuthenticated] = useState(true)
+import Patients from 'DMF/components/Patients.jsx'
 
+import fakeData from 'DMF/constants/fakeData'
+
+const HomePage = props => {
   const { onMobile } = props
 
-  const handleLogOut = () => {
-    app.logout().then(() => setIsAuthenticated(false))
-  }
+  // Managing auth state
+  const [isAuthenticated, setIsAuthenticated] = useState(true)
 
   useEffect(() => {
     app.authentication.getAccessToken().then(accessToken => {
@@ -26,6 +27,12 @@ const HomePage = props => {
     })
   }, [])
 
+  // Handlers
+  const handleLogOut = () => {
+    app.logout().then(() => setIsAuthenticated(false))
+  }
+
+  // Return DOM elements
   if (!isAuthenticated) {
     return <Redirect to='/login' />
   }
@@ -49,12 +56,19 @@ const HomePage = props => {
           minHeight: 472,
           ...(onMobile
             ? { height: '100%', width: '100%', overflow: 'scroll' }
-            : { width: 500 })
+            : { width: 1000 })
         }}>
-        <Typography variant='h3' style={{ margin: '20px' }}>HOME PAGE</Typography>
-        <Typography variant='body1' style={{ margin: '10px' }}>
-          Testing testing 123
+        <Typography variant='h3' style={{ margin: '20px' }}>
+          HOME PAGE
         </Typography>
+
+        <Patients
+          data={fakeData}
+          handleRowClick={patient =>
+            props.history.push(`/patient/${patient.id}`)
+          }
+        />
+
         <Button
           variant='contained'
           color='default'
@@ -67,4 +81,4 @@ const HomePage = props => {
   )
 }
 
-export default useResponsive()(HomePage)
+export default useResponsive()(withRouter(HomePage))
