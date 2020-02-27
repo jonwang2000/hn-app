@@ -1,10 +1,8 @@
 import React, { useState, useEffect } from 'react'
 
-import { Route, Switch, Redirect, withRouter } from 'react-router-dom'
+import { Redirect, withRouter } from 'react-router-dom'
 
-import Button from '@material-ui/core/Button'
 import Paper from '@material-ui/core/Paper'
-import Typography from '@material-ui/core/Typography'
 
 import app from 'DMF/feathers-client.js'
 import useResponsive from 'DMF/hooks/useResponsive'
@@ -28,9 +26,9 @@ const HomePage = props => {
   }, [])
 
   // Handlers
-  const handleLogOut = () => {
-    app.logout().then(() => setIsAuthenticated(false))
-  }
+  const handleRowClick = patient => props.history.push(`/patient/${patient.id}`)
+
+  const handleLogOut = () => app.logout().then(() => setIsAuthenticated(false))
 
   // Return DOM elements
   if (!isAuthenticated) {
@@ -58,24 +56,11 @@ const HomePage = props => {
             ? { height: '100%', width: '100%', overflow: 'scroll' }
             : { width: 1000 })
         }}>
-        <Typography variant='h3' style={{ margin: '20px' }}>
-          HOME PAGE
-        </Typography>
-
         <Patients
           data={fakeData}
-          handleRowClick={patient =>
-            props.history.push(`/patient/${patient.id}`)
-          }
+          handleRowClick={handleRowClick}
+          handleLogOut={handleLogOut}
         />
-
-        <Button
-          variant='contained'
-          color='default'
-          style={{ width: '100%' }}
-          onClick={handleLogOut}>
-          Log Out
-        </Button>
       </Paper>
     </div>
   )
