@@ -6,6 +6,7 @@ import TextField from '@material-ui/core/TextField'
 
 const PatientDialog = props => {
   const { open, onClose, handleSubmit } = props
+
   const [formData, setFormData] = useState({})
 
   const setFormField = (event, field) => {

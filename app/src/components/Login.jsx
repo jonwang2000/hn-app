@@ -6,10 +6,10 @@ import TextField from '@material-ui/core/TextField'
 import useResponsive from 'DMF/hooks/useResponsive'
 
 const Login = props => {
+  const { authenticate } = props
+
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
-
-  const { authenticate } = props
 
   const handleAuth = evt => {
     evt.preventDefault()

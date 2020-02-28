@@ -20,11 +20,12 @@ import Login from 'DMF/components/Login.jsx'
 import Registration from 'DMF/components/Registration.jsx'
 
 const LoginPage = props => {
+  const { onMobile } = props
+
+  // State hooks
   const [isAuthenticated, setIsAuthenticated] = useState(false)
   const [snackBarOpen, setSnackBarOpen] = useState(false)
   const [snackBarMessage, setSnackBarMessage] = useState(null)
-
-  const { onMobile } = props
 
   // Replaces componentDidMount
   useEffect(() => {
@@ -50,6 +51,7 @@ const LoginPage = props => {
 
   const handleCloseSnackBar = () => setSnackBarOpen(false)
 
+  // Return DOM elements
   if (isAuthenticated) {
     return <Redirect to='/' />
   }

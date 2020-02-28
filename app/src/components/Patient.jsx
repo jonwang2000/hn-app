@@ -11,6 +11,7 @@ import fakeData from 'DMF/constants/fakeData'
 
 const Patient = props => {
   const { patientId } = props
+
   const [data, setData] = useState(null)
   const [isLoading, setIsLoading] = useState(true)
   const [showDialog, setShowDialog] = useState(false)
@@ -41,6 +42,7 @@ const Patient = props => {
     )
   }
 
+  // Return DOM elements
   return isLoading ? (
     <div>Loading</div>
   ) : (

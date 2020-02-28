@@ -24,6 +24,7 @@ const PatientPage = props => {
     })
   }, [])
 
+  // Return DOM elements
   if (!isAuthenticated) {
     return <Redirect to='/login'/>
   }
