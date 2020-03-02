@@ -26,7 +26,7 @@ const HomePage = props => {
   }, [])
 
   // Handlers
-  const handleRowClick = patient => props.history.push(`/patient/${patient.id}`)
+  const handleRowClick = patient => props.history.push(`/patient/${patient.studyId}`)
 
   const handleLogOut = () => app.logout().then(() => setIsAuthenticated(false))
 
