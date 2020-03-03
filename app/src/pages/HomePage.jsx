@@ -9,8 +9,6 @@ import useResponsive from 'DMF/hooks/useResponsive'
 
 import Patients from 'DMF/components/Patients.jsx'
 
-import fakeData from 'DMF/constants/fakeData'
-
 const HomePage = props => {
   const { onMobile } = props
 
@@ -57,7 +55,6 @@ const HomePage = props => {
             : { width: 1000 })
         }}>
         <Patients
-          data={fakeData}
           handleRowClick={handleRowClick}
           handleLogOut={handleLogOut}
         />

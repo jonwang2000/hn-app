@@ -6,10 +6,23 @@ import Typography from '@material-ui/core/Typography'
 import PatientsDataTable from 'DMF/components/PatientsDataTable.jsx'
 import PatientsDialog from 'DMF/components/PatientsDialog.jsx'
 
+import fakeData from 'DMF/constants/fakeData'
+import { useEffect } from 'react'
+
 const Patients = props => {
-  const { data, handleRowClick, handleLogOut } = props
+  const { handleRowClick, handleLogOut } = props
+  const [isLoading, setIsLoading] = useState(true)
+  const [data, setData] = useState(null)
   const [showDialog, setShowDialog] = useState(false)
   const [formData, setFormData] = useState(null)
+
+  useEffect(() => {
+    setData(fakeData) //TODO: change this to use API
+  }, [])
+
+  useEffect(() => {
+    data ? setIsLoading(false) : null
+  }, [data])
 
   const handleSubmit = newData => {
     console.log(newData)
@@ -27,7 +40,9 @@ const Patients = props => {
     )
   }
 
-  return (
+  return isLoading ? (
+    <div>Loading</div>
+  ) : (
     <div
       style={{
         margin: 'auto',
