@@ -41,6 +41,7 @@ const LoginPage = props => {
       .authenticate({ strategy: 'local', ...options })
       .then(() => setIsAuthenticated(true))
       .catch(err => {
+        console.log(err)
         setIsAuthenticated(false)
         setSnackBarOpen(true)
         setSnackBarMessage(

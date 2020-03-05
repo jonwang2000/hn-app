@@ -16,15 +16,18 @@ const HomePage = props => {
   const [isAuthenticated, setIsAuthenticated] = useState(true)
 
   useEffect(() => {
-    app.authentication.getAccessToken().then(accessToken => {
-      accessToken
-        ? app.reAuthenticate().then(() => setIsAuthenticated(true))
-        : setIsAuthenticated(false)
-    })
+    app.authentication
+      .getAccessToken()
+      .then(accessToken => {
+        accessToken
+          ? app
+              .reAuthenticate()
+              .then(() => setIsAuthenticated(true))
+              .catch(() => setIsAuthenticated(false))
+          : setIsAuthenticated(false)
+      })
+      .catch(() => setIsAuthenticated(false))
   }, [])
-
-  // Handlers
-  const handleRowClick = patient => props.history.push(`/patient/${patient.studyId}`)
 
   const handleLogOut = () => app.logout().then(() => setIsAuthenticated(false))
 
@@ -54,10 +57,7 @@ const HomePage = props => {
             ? { height: '100%', width: '100%', overflow: 'scroll' }
             : { width: 1000 })
         }}>
-        <Patients
-          handleRowClick={handleRowClick}
-          handleLogOut={handleLogOut}
-        />
+        <Patients history={props.history} handleLogOut={handleLogOut} />
       </Paper>
     </div>
   )

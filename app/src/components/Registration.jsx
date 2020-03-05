@@ -29,8 +29,9 @@ const Registration = props => {
       .service('users')
       .create({ email, password })
       .then(() => authenticate({ strategy: 'local', email, password }))
-      .catch(() => {
+      .catch(err => {
         setSnackBarOpen(true)
+        console.log(err)
         setSnackBarMessage('Sorry, this email has already been used')
       })
   }

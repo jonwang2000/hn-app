@@ -17,16 +17,21 @@ const PatientPage = props => {
   const [isAuthenticated, setIsAuthenticated] = useState(true)
 
   useEffect(() => {
-    app.authentication.getAccessToken().then(accessToken => {
-      accessToken
-        ? app.reAuthenticate().then(() => setIsAuthenticated(true))
-        : setIsAuthenticated(false)
-    })
+    app.authentication
+      .getAccessToken()
+      .then(accessToken => {
+        accessToken
+          ? app
+              .reAuthenticate()
+              .then(() => setIsAuthenticated(true))
+              .catch(() => setIsAuthenticated(false))
+          : setIsAuthenticated(false)
+      })
+      .catch(() => setIsAuthenticated(false))
   }, [])
 
-  // Return DOM elements
   if (!isAuthenticated) {
-    return <Redirect to='/login'/>
+    return <Redirect to='/login' />
   }
 
   return (
@@ -50,8 +55,8 @@ const PatientPage = props => {
             ? { height: '100%', width: '100%', overflow: 'scroll' }
             : { width: 1000 })
         }}>
-          <Patient patientId={slug}/>
-        </Paper>
+        <Patient studyId={slug} />
+      </Paper>
     </div>
   )
 }

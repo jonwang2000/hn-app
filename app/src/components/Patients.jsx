@@ -1,35 +1,68 @@
 import React, { useState } from 'react'
 
 import Button from '@material-ui/core/Button'
+import CircularProgress from '@material-ui/core/CircularProgress'
 import Typography from '@material-ui/core/Typography'
 
-import PatientsDataTable from 'DMF/components/PatientsDataTable.jsx'
+import app from 'DMF/feathers-client.js'
+
+import DataTable from 'DMF/components/DataTable.jsx'
 import PatientsDialog from 'DMF/components/PatientsDialog.jsx'
 
-import fakeData from 'DMF/constants/fakeData'
 import { useEffect } from 'react'
 
+const patientColumns = [
+  { name: 'study_id', label: 'Study Id' },
+  { name: 'sex', label: 'Sex' }
+]
+
 const Patients = props => {
-  const { handleRowClick, handleLogOut } = props
-  const [isLoading, setIsLoading] = useState(true)
-  const [data, setData] = useState(null)
+  const { handleLogOut } = props
+
+  const [isLoading, setIsLoading] = useState(false)
+  const [data, setData] = useState([])
   const [showDialog, setShowDialog] = useState(false)
   const [formData, setFormData] = useState(null)
 
+  const fetchData = () => {
+    setIsLoading(true)
+    app
+      .service('patients')
+      .find()
+      .then(res => {
+        setData(res.data)
+      })
+      .then(() => setIsLoading(false))
+  }
+
+  // componentDidMount
   useEffect(() => {
-    setData(fakeData) //TODO: change this to use API
+    fetchData()
   }, [])
 
+  // Handling formData change (create new Patient)
   useEffect(() => {
-    data ? setIsLoading(false) : null
-  }, [data])
+    if (formData) {
+      app
+        .service('patients')
+        .create(formData)
+        .then(e => console.log(e))
+        .then(() => fetchData())
+        .catch(e => console.log(e))
+    }
+  }, [formData])
+
+  // Handlers
+  const handleRowClick = patient => {
+    props.history.push(`/patient/${patient.study_id}`)
+  }
 
   const handleSubmit = newData => {
-    console.log(newData)
     setFormData(newData)
     setShowDialog(false)
   }
 
+  // Rendering
   const renderDialog = () => {
     return (
       <PatientsDialog
@@ -41,7 +74,15 @@ const Patients = props => {
   }
 
   return isLoading ? (
-    <div>Loading</div>
+    <div
+      style={{
+        position: 'absolute',
+        left: '50%',
+        top: '50%',
+        transform: 'translate(-50%, -50%)'
+      }}>
+      <CircularProgress />
+    </div>
   ) : (
     <div
       style={{
@@ -82,7 +123,19 @@ const Patients = props => {
       </div>
 
       <div>
-        <PatientsDataTable data={data} handleRowClick={handleRowClick} />
+        <DataTable
+          data={data}
+          handleRowClick={handleRowClick}
+          columns={patientColumns}
+          title={
+            isLoading && (
+              <CircularProgress
+                size={24}
+                style={{ marginLeft: 15, position: 'relative', top: 4 }}
+              />
+            )
+          }
+        />
       </div>
 
       <Button
