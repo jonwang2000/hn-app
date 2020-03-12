@@ -147,7 +147,7 @@ module.exports = function (opts) {
     target: IS_BROWSER ? 'web' : 'node',
     resolve: {
       alias: {
-        DMF: path.resolve(__dirname, './src'),
+        HNA: path.resolve(__dirname, './src'),
         react: path.resolve(__dirname, './node_modules', 'react')
       },
       modules: [path.resolve(__dirname, 'src'), 'node_modules'],

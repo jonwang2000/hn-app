@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react'
 import Button from '@material-ui/core/Button'
 import TextField from '@material-ui/core/TextField'
 
-import useResponsive from 'DMF/hooks/useResponsive'
+import useResponsive from 'HNA/hooks/useResponsive'
 
 const Login = props => {
   const { authenticate } = props

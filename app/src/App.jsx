@@ -1,28 +1,50 @@
 import React from 'react'
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
+import {
+  BrowserRouter as Router,
+  Redirect,
+  Route,
+  Switch
+} from 'react-router-dom'
 
-import useResponsive from 'DMF/hooks/useResponsive'
-import LoginPage from 'DMF/pages/LoginPage.jsx'
-import HomePage from 'DMF/pages/HomePage.jsx'
-import PatientPage from 'DMF/pages/PatientPage.jsx'
+import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles'
+
+import useResponsive from 'HNA/hooks/useResponsive'
+import HeaderBar from 'HNA/components/HeaderBar.jsx'
+import LoginPage from 'HNA/pages/LoginPage.jsx'
+import HomePage from 'HNA/pages/HomePage.jsx'
+import PatientPage from 'HNA/pages/PatientPage.jsx'
+
+import AuthContext from 'HNA/components/AuthContext.jsx'
+import PrivateRoute from 'HNA/components/PrivateRoute.jsx'
+
+const theme = createMuiTheme({
+  palette: {
+    primary: { main: '#66a2d4' },
+    secondary: { main: '#db6a56' }
+  }
+})
 
 const App = () => {
   return (
-    <div>
-      <Router>
-        <Switch>
-          <Route path='/patient/:slug'>
-            <PatientPage />
-          </Route>
-          <Route path='/login'>
-            <LoginPage />
-          </Route>
+    <AuthContext>
+      <ThemeProvider theme={theme}>
+        <Router>
           <Route path='/'>
-            <HomePage />
+            <HeaderBar />
+            <div>
+              <Switch>
+                <PrivateRoute path='/patient/:slug' component={PatientPage} />
+                <Route path='/login' component={LoginPage} />
+                <PrivateRoute path='/patients' component={HomePage} />
+                <Route>
+                  <Redirect to='/patients' />
+                </Route>
+              </Switch>
+            </div>
           </Route>
-        </Switch>
-      </Router>
-    </div>
+        </Router>
+      </ThemeProvider>
+    </AuthContext>
   )
 }
 

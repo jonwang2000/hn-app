@@ -5,7 +5,7 @@ import CloudUploadIcon from '@material-ui/icons/CloudUpload'
 import { withStyles } from '@material-ui/core/styles'
 import Button from '@material-ui/core/Button'
 
-import responsive from 'DMF/components/responsive.jsx'
+import responsive from 'HNA/components/responsive.jsx'
 
 const baseStyle = {
   flex: 1,

@@ -3,9 +3,9 @@ import map from 'lodash/map'
 
 import CircularProgress from '@material-ui/core/CircularProgress'
 
-import app from 'DMF/feathers-client.js'
-import Uploader from 'DMF/components/uploader.jsx'
-import responsive from 'DMF/components/responsive.jsx'
+import app from 'HNA/feathers-client.js'
+import Uploader from 'HNA/components/uploader.jsx'
+import responsive from 'HNA/components/responsive.jsx'
 
 @responsive
 export default class ImageSelector extends Component {
