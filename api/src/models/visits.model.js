@@ -22,6 +22,11 @@ module.exports = function(app) {
         allowNull: false,
         defaultValue: false
       },
+      vcug: {
+        type: DataTypes.BOOLEAN,
+        allowNull: false,
+        defaultValue: false
+      },
       reflux: {
         type: DataTypes.BOOLEAN,
         allowNull: false,
@@ -35,6 +40,10 @@ module.exports = function(app) {
         type: DataTypes.STRING,
         allowNull: false
       },
+      function_test: {
+        type: DataTypes.DECIMAL,
+        allowNull: true
+      },
       prob_surgery: {
         type: DataTypes.DECIMAL,
         allowNull: true
@@ -46,6 +55,33 @@ module.exports = function(app) {
       prob_reflux: {
         type: DataTypes.DECIMAL,
         allowNull: true
+      },
+      ultrasound_date: {
+        type: DataTypes.DATE,
+        allowNull: false
+      },
+      age_at_visit: {
+        type: DataTypes.DECIMAL,
+        allowNull: false
+      },
+      surgery_indicated: {
+        type: DataTypes.BOOLEAN,
+        allowNull: false,
+        defaultValue: false
+      },
+      surgery_type: {
+        type: DataTypes.STRING,
+        allowNull: true
+      },
+      nuclear_scan: {
+        type: DataTypes.BOOLEAN,
+        allowNull: false,
+        defaultValue: false
+      },
+      prophylaxis: {
+        type: DataTypes.BOOLEAN,
+        allowNull: false,
+        defaultValue: false
       }
       // TODO: IMAGES
     },

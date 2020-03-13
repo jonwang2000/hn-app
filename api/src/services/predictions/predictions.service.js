@@ -9,6 +9,7 @@ const gradcamSingleRunPath = '/home/node/scripts/gradcam_singlerun.py'
 module.exports = function(app) {
   class Prediction {
     create(data) {
+      const visitId = get(data, 'visitId', null)
       const files = get(data, 'files', [])
       if (files.length !== 2) {
         throw new Error('Two views required to run scoring algorithm')
@@ -40,6 +41,7 @@ module.exports = function(app) {
           const transverseGradCam = fs.readFileSync(UPLOAD_PATH + transverse + '_Cam_On_Image_inferno.png', { encoding: 'base64' })
 
           return {
+            visitId,
             probability,
             sagittalPreProcessed,
             sagittalGradCam,

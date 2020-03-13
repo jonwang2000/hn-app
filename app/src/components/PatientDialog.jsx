@@ -24,6 +24,13 @@ const PatientDialog = props => {
         variant='outlined'
         required={required}
         type={type ? type : 'string'}
+        InputLabelProps={
+          type === 'date'
+            ? {
+                shrink: true
+              }
+            : null
+        }
       />
     )
   }
@@ -58,7 +65,21 @@ const PatientDialog = props => {
             }}>
             {renderCheckbox('uti', 'UTI?')}
             {renderCheckbox('reflux', 'Reflux?')}
+            {renderCheckbox('vcug', 'VCUG?')}
+            {renderCheckbox('nuclear_scan', 'Nuclear Scan?')}
+            {renderCheckbox('prophylaxis', 'Prophylaxis?')}
             {renderTextField('function_type', 'Function Type', true)}
+            {renderTextField('function_test', 'Function Test', true, 'number')}
+            {renderTextField(
+              'ultrasound_date',
+              'Ultrasound Date',
+              true,
+              'date'
+            )}
+            {renderTextField('age_at_visit', 'Age at Visit', true, 'number')}
+            {renderCheckbox('surgery_indicated', 'Surgery Indicated?')}
+            {renderTextField('surgery_type', 'Surgery Type', false)}
+
             <Button
               style={{ margin: '20px' }}
               type='submit'

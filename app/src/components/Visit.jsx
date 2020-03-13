@@ -7,13 +7,13 @@ import CircularProgress from '@material-ui/core/CircularProgress'
 import Grid from '@material-ui/core/Grid'
 import Typography from '@material-ui/core/Typography'
 
-import ImageSelector from 'HNA/components/ImageSelector.jsx'
+import ImagePredictor from 'HNA/components/ImagePredictor.jsx'
 
 const Visit = props => {
   const [isLoading, setIsLoading] = useState(true)
   const [data, setData] = useState(null)
 
-  const { id } = props
+  const { id, handleResult } = props
   const fetchData = () => {
     app
       .service('visits')
@@ -57,7 +57,7 @@ const Visit = props => {
       <Grid item xs={12} sm={6}>
         <Card style={{ height: '100%' }}>
           <div style={{ padding: '20px' }}>
-            <ImageSelector />
+            <ImagePredictor visitId={id} handleResult={handleResult} />
           </div>
         </Card>
       </Grid>

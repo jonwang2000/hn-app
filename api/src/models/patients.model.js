@@ -30,8 +30,8 @@ module.exports = function(app) {
         type: DataTypes.INTEGER,
         allowNull: true
       },
-      known_anomalies: {
-        type: DataTypes.STRING,
+      etiology: {
+        type: DataTypes.TEXT,
         allowNull: true
       },
       ethnicity: {
@@ -41,6 +41,23 @@ module.exports = function(app) {
       postal_code: {
         type: DataTypes.STRING,
         allowNull: false
+      },
+      patient_age: {
+        type: DataTypes.INTEGER,
+        allowNull: false
+      },
+      ultrasound_date: {
+        type: DataTypes.DATE,
+        allowNull: true
+      },
+      hn_side: {
+        type: DataTypes.STRING,
+        allowNull: true
+      },
+      prophylaxis: {
+        type: DataTypes.BOOLEAN,
+        allowNull: false,
+        defaultValue: false
       }
     },
     {

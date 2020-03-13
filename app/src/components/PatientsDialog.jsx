@@ -24,6 +24,13 @@ const PatientsDialog = props => {
         variant='outlined'
         required={required}
         type={type ? type : 'string'}
+        InputLabelProps={
+          type === 'date'
+            ? {
+                shrink: true
+              }
+            : null
+        }
       />
     )
   }
@@ -57,10 +64,14 @@ const PatientsDialog = props => {
               flexDirection: 'column'
             }}>
             {renderTextField('study_id', 'Study ID', true)}
+            {renderTextField('patient_age', 'Patient Age', true, 'number')}
             {renderTextField('sex', 'Sex', true)}
             {renderCheckbox('surgery_performed', 'Surgery Performed?')}
             {renderTextField('surgery_age', 'Surgery Age', false, 'number')}
-            {renderTextField('known_anomalies', 'Known Anomalies', true)}
+            {renderTextField('ultrasound_date', 'Ultrasound Date', false, 'date')}
+            {renderTextField('hn_side', 'HN Side', false)}
+            {renderCheckbox('prophylaxis', 'Prophylaxis?')}
+            {renderTextField('etiology', 'Known Anomalies', true)}
             {renderTextField('ethnicity', 'Ethicity', true)}
             {renderTextField('postal_code', 'Postal Code', true)}
             <Button

@@ -13,18 +13,7 @@ module.exports = {
     all: [],
     find: [],
     get: [],
-    create: [
-      //Add hook for patching visit
-      context => {
-        const { visitId, probability } = context.result;
-
-        return context.app
-          .service("visits")
-          .patch(visitId, { prob_surgery: probability })
-          .then(res => console.log(res))
-          .catch(e => console.log(e));
-      }
-    ],
+    create: [],
     update: [],
     patch: [],
     remove: []

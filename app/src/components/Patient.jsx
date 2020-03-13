@@ -14,7 +14,8 @@ import Visit from 'HNA/components/Visit.jsx'
 
 const visitsColumns = [
   { name: 'id', label: 'Visit Id' },
-  { name: 'created_at', label: 'Date' }
+  { name: 'created_at', label: 'Date' },
+  { name: 'prob_surgery', label: 'Surgery %' }
 ]
 
 const Patient = props => {
@@ -97,6 +98,10 @@ const Patient = props => {
   const handleSubmit = newData => {
     setFormData(newData)
     setShowDialog(false)
+  }
+
+  const handleResult = () => {
+    fetchVisitsData()
   }
 
   // Rendering
@@ -202,7 +207,7 @@ const Patient = props => {
         {renderPatientSummary()}
         {renderPatientInfo()}
         {renderVisitsTable()}
-        {selectedVisit.id ? <Visit id={selectedVisit.id} /> : null}
+        {selectedVisit.id ? <Visit id={selectedVisit.id} handleResult={handleResult} /> : null}
       </Grid>
     )
 }
