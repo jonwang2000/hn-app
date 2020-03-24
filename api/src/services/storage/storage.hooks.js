@@ -1,5 +1,3 @@
-const convertToPNG = require('../../hooks/convert-to-png.js')
-
 module.exports = {
   before: {
     all: [],
@@ -15,9 +13,7 @@ module.exports = {
     all: [],
     find: [],
     get: [],
-    create: [
-      convertToPNG()
-    ],
+    create: [],
     update: [],
     patch: [],
     remove: []

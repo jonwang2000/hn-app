@@ -11,6 +11,10 @@ module.exports = function(app) {
     create(data) {
       const visitId = get(data, 'visitId', null)
       const files = get(data, 'files', [])
+
+      console.log(files)
+      console.log(UPLOAD_PATH)
+
       if (files.length !== 2) {
         throw new Error('Two views required to run scoring algorithm')
       }

@@ -38,6 +38,7 @@ const ImagePredictor = props => {
         <Grid item xs={12}>
           <ImageSelector
             onComplete={files => {
+              console.log('oncomplete')
               setUploadedFiles(files)
               setIsReadyToPredict(true)
             }}
