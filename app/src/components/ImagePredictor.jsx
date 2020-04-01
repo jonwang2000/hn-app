@@ -25,9 +25,10 @@ const ImagePredictor = props => {
         .service('predictions')
         .create({ files: fileIDs, visitId })
         .then(res => {
+          console.log(res)
           return setIsPredicting(false)
         })
-        .then(() => handleResult())
+        .then(() => handleResult()) // Refresh table
         .catch(e => console.log(e))
     }
   }
@@ -37,6 +38,7 @@ const ImagePredictor = props => {
       <Grid container spacing={2}>
         <Grid item xs={12}>
           <ImageSelector
+            visitId={visitId}
             onComplete={files => {
               console.log('oncomplete')
               setUploadedFiles(files)

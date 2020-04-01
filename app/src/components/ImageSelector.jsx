@@ -11,7 +11,7 @@ import Uploader from 'HNA/components/Uploader.jsx'
 import DWVComponent from 'HNA/components/DWVComponent.jsx'
 
 const ImageSelector = props => {
-  const { onComplete } = props
+  const { visitId, onComplete } = props
 
   // Emulating class state because of the ways keys were handled
   const [state, setFuncState] = useState({
@@ -40,7 +40,7 @@ const ImageSelector = props => {
 
     app
       .service('uploads')
-      .create({ uri: dialogResult })
+      .create({ uri: dialogResult, visit_id: visitId, image_type: dialogView })
       .then(result =>
         setState({
           [`${dialogView}Loading`]: false,

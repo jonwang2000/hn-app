@@ -33,10 +33,7 @@ const DWVComponent = props => {
     const app = new dwv.App()
     app.init({ containerDivId: 'dwv' })
 
-    app.addEventListener('load-end', e => {
-      console.log(stateCrop, e)
-      setCrop(stateCrop)
-    })
+    app.addEventListener('load-end', e => setCrop(stateCrop))
 
     setDwvApp(app)
   }, [])

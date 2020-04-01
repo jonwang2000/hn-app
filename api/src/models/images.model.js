@@ -13,21 +13,17 @@ module.exports = function(app) {
         defaultValue: DataTypes.UUIDV4,
         primaryKey: true
       },
-      patient_id: {
-        type: DataTypes.UUID,
-        allowNull: false
-      },
       visit_id: {
         type: DataTypes.UUID,
         allowNull: false
       },
+      upload_id: {
+        type: DataTypes.STRING,
+        allowNull: false
+      },
       image_type: {
         type: DataTypes.STRING,
-        allowNull: true
-      },
-      image_label: {
-        type: DataTypes.STRING,
-        allowNull: true
+        allowNull: false
       }
     },
     {

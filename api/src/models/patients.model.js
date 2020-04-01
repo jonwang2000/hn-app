@@ -24,7 +24,8 @@ module.exports = function(app) {
       },
       surgery_performed: {
         type: DataTypes.BOOLEAN,
-        allowNull: false
+        allowNull: false,
+        defaultValue: false
       },
       surgery_age: {
         type: DataTypes.INTEGER,
