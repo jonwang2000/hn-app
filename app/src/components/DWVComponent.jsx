@@ -11,6 +11,17 @@ import 'react-image-crop/dist/ReactCrop.css'
 // gui overrides, get element for dwv
 dwv.gui.getElement = dwv.gui.base.getElement
 
+/*
+  Overview/TODO:
+
+  Takes in given files (DICOMs) and then displays them in a react-image-crop cropper,
+  where they are then saved as .png dataURLs.
+
+  Currently really, really hacky code, styling is bad too.
+
+  The dwv canvas system really doesn't work well with the cropper.
+*/
+
 const DWVComponent = props => {
   const {
     stateCrop,
@@ -38,14 +49,17 @@ const DWVComponent = props => {
     setDwvApp(app)
   }, [])
 
+  // If ready, then load the files; !showCropped is there so you can go back/cancel
   useEffect(() => {
-    if (dwvApp && files) {
+    if (dwvApp && files && !showCropped) {
       dwvApp.loadFiles(files)
     }
-  }, [dwvApp, files])
+  }, [dwvApp, files, showCropped])
 
+  // Cropping onChange function
   const onChange = crop => setCrop(crop)
 
+  // When user is satisfied with crop
   const handleNext = () => {
     const canvas = document.getElementById('canvas')
     const imageData = canvas.toDataURL()
@@ -58,6 +72,7 @@ const DWVComponent = props => {
     setShowCropped(true)
   }
 
+  // Submit cropped to API
   const submitData = () => {
     handleSubmit(croppedData)
     handleStateCrop(crop)
@@ -96,18 +111,16 @@ const DWVComponent = props => {
   }
 
   return (
-    <Dialog maxWidth='xl' open={open} onClose={() => onClose(view)}>
+    <Dialog fullScreen open={open} onClose={() => onClose(view)}>
       {!showCropped ? (
         <div
           id='dwv'
           style={{
+            position: 'absolute',
             display: 'flex',
             flexDirection: 'column',
             justifyContent: 'center',
-            alignItems: 'center',
-            height: '70vh',
-            width: '70vw',
-            overflow: 'hidden'
+            alignItems: 'center'
           }}>
           <div className='layerContainer'>
             <ReactCrop
@@ -119,7 +132,6 @@ const DWVComponent = props => {
                   id='canvas'
                   className='imageLayer'
                   style={{
-                    width: '100%',
                     display: 'block',
                     padding: 0,
                     margin: 'auto'
@@ -129,12 +141,13 @@ const DWVComponent = props => {
             />
           </div>
           <div>
-            <Button onClick={handleNext}>Next</Button>
+            <Button onClick={() => onClose(view)}>Cancel</Button>
             <Button
               onClick={() => setCrop(stateCrop)}
               disabled={stateCrop === null}>
               Previous Crop
             </Button>
+            <Button onClick={handleNext}>Next</Button>
           </div>
         </div>
       ) : (
@@ -144,12 +157,13 @@ const DWVComponent = props => {
             display: 'flex',
             flexDirection: 'column',
             justifyContent: 'center',
-            alignItems: 'center',
-            height: '70vh',
-            width: '70vw'
+            alignItems: 'center'
           }}>
           <img src={croppedData} />
-          <Button onClick={submitData}>Submit</Button>
+          <div>
+            <Button onClick={() => setShowCropped(false)}>Back</Button>
+            <Button onClick={submitData}>Submit</Button>
+          </div>
         </div>
       )}
     </Dialog>

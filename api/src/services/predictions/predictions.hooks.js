@@ -6,7 +6,7 @@ module.exports = {
     create: [],
     update: [],
     patch: [],
-    remove: []
+    remove: [],
   },
 
   after: {
@@ -15,19 +15,45 @@ module.exports = {
     get: [],
     create: [
       //Add hook for patching visit
-      context => {
-        const { visitId, probability } = context.result;
+      (context) => {
+        const {
+          visitId,
+          probability,
+          sagittalGradCamId,
+          transverseGradCamId,
+        } = context.result;
 
         return context.app
           .service("visits")
           .patch(visitId, { prob_surgery: probability })
-          .then(res => console.log(res))
-          .catch(e => console.log(e));
-      }
+          .then(() => {
+            return context.app
+              .service("images")
+              .create({
+                upload_id: sagittalGradCamId,
+                visit_id: visitId,
+                image_type: "gradcam_sagittal",
+              })
+              .then((res) => {
+                console.log(res);
+                return context.app
+                  .service("images")
+                  .create({
+                    upload_id: transverseGradCamId,
+                    visit_id: visitId,
+                    image_type: "gradcam_transverse",
+                  })
+                  .then((res) => console.log(res))
+                  .catch((e) => console.log(e));
+              })
+              .catch((e) => console.log(e));
+          })
+          .catch((e) => console.log(e));
+      },
     ],
     update: [],
     patch: [],
-    remove: []
+    remove: [],
   },
 
   error: {
@@ -37,6 +63,6 @@ module.exports = {
     create: [],
     update: [],
     patch: [],
-    remove: []
-  }
+    remove: [],
+  },
 };

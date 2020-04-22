@@ -1,16 +1,15 @@
 import React, { useEffect, useState } from 'react'
 
 import CircularProgress from '@material-ui/core/CircularProgress'
-import Dialog from '@material-ui/core/Dialog'
 
 import useResponsive from 'HNA/hooks/useResponsive'
 
 import app from 'HNA/feathers-client.js'
 
-import Uploader from 'HNA/components/Uploader.jsx'
 import DWVComponent from 'HNA/components/DWVComponent.jsx'
+import Uploader from 'HNA/components/Uploader.jsx'
 
-const ImageSelector = props => {
+const ImageSelector = (props) => {
   const { visitId, onComplete } = props
 
   // Emulating class state because of the ways keys were handled
@@ -18,10 +17,10 @@ const ImageSelector = props => {
     sagittalLoading: false,
     sagittalView: null,
     transverseLoading: false,
-    transverseView: null
+    transverseView: null,
   })
 
-  const setState = stateObj => {
+  const setState = (stateObj) => {
     setFuncState({ ...state, ...stateObj })
   }
 
@@ -32,7 +31,7 @@ const ImageSelector = props => {
   const [dialogResult, setDialogResult] = useState(null)
   const [stateCrop, setStateCrop] = useState(null)
 
-  const handleStateCrop = crop => setStateCrop(crop)
+  const handleStateCrop = (crop) => setStateCrop(crop)
 
   // API call for uploading dataURL
   const upload = () => {
@@ -41,10 +40,10 @@ const ImageSelector = props => {
     app
       .service('uploads')
       .create({ uri: dialogResult, visit_id: visitId, image_type: dialogView })
-      .then(result =>
+      .then((result) =>
         setState({
           [`${dialogView}Loading`]: false,
-          [`${dialogView}View`]: result
+          [`${dialogView}View`]: result,
         })
       )
   }
@@ -63,7 +62,7 @@ const ImageSelector = props => {
     setDialogOpen(true)
   }
 
-  const handleSubmit = uri => setDialogResult(uri)
+  const handleSubmit = (uri) => setDialogResult(uri)
 
   // Replace checkComplete
   useEffect(() => {
@@ -74,7 +73,7 @@ const ImageSelector = props => {
     }
   }, [state])
 
-  const onClose = view => {
+  const onClose = (view) => {
     setState({ [`${view}Loading`]: false })
     setDialogOpen(false)
   }
@@ -103,8 +102,8 @@ const ImageSelector = props => {
           alignItems: 'center',
           display: 'flex',
           height: '100%',
-          justifyContent: 'center'
-        })
+          justifyContent: 'center',
+        }),
       }}>
       {loading ? (
         <CircularProgress />
@@ -128,35 +127,25 @@ const ImageSelector = props => {
     sagittalLoading,
     sagittalView,
     transverseLoading,
-    transverseView
+    transverseView,
   } = state
-  const textStyle = {
-    fontFamily: 'Roboto, Arial, Helvetica, sans-serif',
-    fontSize: 16,
-    fontWeight: 400,
-    padding: '0 20px',
-    textAlign: 'left',
-    marginBottom: 10
-  }
 
   return (
-    <div>
+    <div style={{ marginTop: '10px' }}>
       {renderDialog()}
       <div style={{ display: 'flex' }}>
         <div style={{ flexBasis: '50%' }}>
-          <div style={textStyle}>Saggital View:</div>
           {renderUploadSection(sagittalView, sagittalLoading, {
             buttonText: 'Upload SAG',
-            onDrop: file => setDicom(file, 'sagittal'),
-            uploadText: 'Drop your dicom file here'
+            onDrop: (file) => setDicom(file, 'sagittal'),
+            uploadText: 'Drop dicom file here',
           })}
         </div>
         <div style={{ flexBasis: '50%' }}>
-          <div style={textStyle}>Transverse View:</div>
           {renderUploadSection(transverseView, transverseLoading, {
             buttonText: 'Upload TRV',
-            onDrop: file => setDicom(file, 'transverse'),
-            uploadText: 'Drop your dicom file here'
+            onDrop: (file) => setDicom(file, 'transverse'),
+            uploadText: 'Drop dicom file here',
           })}
         </div>
       </div>
