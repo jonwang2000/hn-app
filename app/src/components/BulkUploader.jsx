@@ -2,11 +2,7 @@ import React from 'react'
 
 import Dropzone from 'react-dropzone'
 
-import CloudUploadIcon from '@material-ui/icons/CloudUpload'
-import { withStyles } from '@material-ui/core/styles'
 import Button from '@material-ui/core/Button'
-
-import responsive from 'HNA/components/responsive.jsx'
 
 const activeStyle = {
   textAlign: 'center',
@@ -18,7 +14,7 @@ const baseStyle = {
   display: 'flex',
   flexDirection: 'column',
   alignItems: 'center',
-  padding: '20px',
+  padding: '100px',
   borderWidth: 2,
   borderRadius: 2,
   borderColor: '#eeeeee',
@@ -37,17 +33,11 @@ const textStyle = {
   textAlign: 'center'
 }
 
-const styles = theme => ({
-  iconSmall: {
-    fontSize: 20
-  }
-})
-
 const BulkUploader = props => {
-  const { classes, onDrop, buttonText, uploadText, displayZone = true } = props
+  const { onDrop, buttonText, uploadText, displayZone = true } = props
 
   return (
-    <div style={{ padding: '0 20px' }}>
+    <div style={{ padding: '50px' }}>
       <Dropzone multiple onDrop={onDrop}>
         {({ getRootProps, getInputProps, isDragActive }) => {
           const style = displayZone

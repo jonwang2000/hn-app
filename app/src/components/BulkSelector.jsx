@@ -7,15 +7,18 @@ import pEvent from 'p-event'
 import Promise from 'bluebird'
 
 import Button from '@material-ui/core/Button'
+import CircularProgress from '@material-ui/core/CircularProgress'
 import Dialog from '@material-ui/core/Dialog'
 
 import BulkUploader from 'HNA/components/BulkUploader.jsx'
 import DWVComponent from 'HNA/components/DWVComponent.jsx'
 
-const BulkSelector = props => {
-  const { fetchPictures, visitId } = props
+const BulkSelector = (props) => {
+  const { onClose, fetchPictures, visitId } = props
 
   const [bulkFiles, setBulkFiles] = useState([])
+
+  const [isLoading, setIsLoading] = useState(false)
 
   const [dwvDialogOpen, setDwvDialogOpen] = useState(false)
   const [stateCrop, setStateCrop] = useState(null)
@@ -52,25 +55,25 @@ const BulkSelector = props => {
 
   //  Converts given files to png datauris by rendering onto
   //  the hidden dwv canvas one-by-one, then cropping
-  const convertFiles = files => {
-    Promise.mapSeries(files, file => {
+  const convertFiles = (files) => {
+    Promise.mapSeries(files, (file) => {
       dwvApp.loadFiles([file])
       return pEvent(dwvApp, 'load-end')
-        .then(e => {
+        .then((e) => {
           const canvas = document.getElementById('rendererCanvas')
           const imageData = canvas.toDataURL('image/png')
           return imageData
         })
-        .catch(err => console.error(err))
+        .catch((err) => console.error(err))
     })
-      .then(uris =>
-        Promise.mapSeries(uris, uri => {
+      .then((uris) =>
+        Promise.mapSeries(uris, (uri) => {
           return getCroppedImg(uri)
         })
       )
-      .then(uris =>
+      .then((uris) =>
         setUris(
-          uris.map(uri => {
+          uris.map((uri) => {
             return { uri: uri, image_type: '' }
           })
         )
@@ -78,9 +81,7 @@ const BulkSelector = props => {
   }
 
   // Handlers
-  const handleStateCrop = crop => setStateCrop(crop)
-
-  const handleSubmit = () => {}
+  const handleStateCrop = (crop) => setStateCrop(crop)
 
   const dwvDialogClose = () => setDwvDialogOpen(false)
 
@@ -94,7 +95,7 @@ const BulkSelector = props => {
   const handleSelect = (e, inputUri) => {
     console.log(e.target.value)
     setUris(
-      uris.map(uri =>
+      uris.map((uri) =>
         uri.uri === inputUri
           ? { uri: uri.uri, image_type: e.target.value }
           : uri
@@ -105,22 +106,28 @@ const BulkSelector = props => {
   const uploadUris = () => {
     // Upload all images with tags
     setImgDialogOpen(false)
-
-    uris.forEach(uri => upload({ visit_id: visitId, ...uri }))
+    const uploadPromises = uris.map((uri) =>
+      upload({ visit_id: visitId, ...uri })
+    )
+    Promise.all(uploadPromises).then(() => {
+      console.log('uploadcomplete')
+      setIsLoading(false)
+      onClose()
+    })
   }
 
-  const upload = obj => {
+  const upload = (obj) => {
     app
       .service('uploads')
       .create(obj)
-      .then(res => {
+      .then((res) => {
         console.log(res)
         fetchPictures()
       })
   }
 
   // Utility func for getting cropped portion as a canvas
-  const getCroppedImg = dataUrl => {
+  const getCroppedImg = (dataUrl) => {
     const promise = new Promise((resolve, reject) => {
       const img = new Image()
       img.src = dataUrl
@@ -155,9 +162,7 @@ const BulkSelector = props => {
   const renderDwvDialog = () =>
     dwvDialogOpen ? (
       <DWVComponent
-        view={'test'}
         files={bulkFiles}
-        handleSubmit={handleSubmit}
         open={dwvDialogOpen}
         onClose={dwvDialogClose}
         stateCrop={stateCrop}
@@ -171,7 +176,7 @@ const BulkSelector = props => {
       onClose={imgDialogClose}
       style={{ overflow: 'hidden' }}
       maxWidth='xl'>
-      {uris.map(uri => (
+      {uris.map((uri) => (
         <div
           key={uri.uri}
           style={{ width: '100%', display: 'flex', flexDirection: 'row' }}>
@@ -179,7 +184,7 @@ const BulkSelector = props => {
             src={uri.uri}
             style={{ width: '80%', border: '1px solid #000' }}
           />
-          <select onChange={e => handleSelect(e, uri.uri)}>
+          <select onChange={(e) => handleSelect(e, uri.uri)}>
             <option value={''}>N/A</option>
             <option value='l_transverse'>Left Transverse</option>
             <option value='l_sagittal'>Left Sagittal</option>
@@ -196,15 +201,22 @@ const BulkSelector = props => {
   )
 
   return (
-    <div style={{ width: '100%' }}>
+    <div style={{ width: '100%', height: '400px' }}>
       {renderDwvDialog()}
       {renderImgDialog()}
-      <BulkUploader
-        uploadText='Drop DICOMs here'
-        buttonText='Upload Bulk'
-        onDrop={files => setBulkFiles(files)}
-        style={{ width: '100%' }}
-      />
+      {isLoading ? (
+        <CircularProgress />
+      ) : (
+        <BulkUploader
+          uploadText='Drop DICOMs here'
+          buttonText='Upload Bulk'
+          onDrop={(files) => {
+            setIsLoading(true)
+            setBulkFiles(files)
+          }}
+          style={{ width: '100%', height: '100%' }}
+        />
+      )}
 
       {/* Really hacky fix for dwv */}
       <div id='renderer' style={{ position: 'fixed', visibility: 'hidden' }}>

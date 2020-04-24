@@ -26,11 +26,9 @@ const DWVComponent = props => {
   const {
     stateCrop,
     handleStateCrop,
-    view,
     open,
     onClose,
-    files,
-    handleSubmit
+    files
   } = props
 
   // State hooks
@@ -74,11 +72,10 @@ const DWVComponent = props => {
 
   // Submit cropped to API
   const submitData = () => {
-    handleSubmit(croppedData)
     handleStateCrop(crop)
     setCroppedData(null)
     setShowCropped(false)
-    onClose(view)
+    onClose()
   }
 
   // Utility func for getting cropped portion as a canvas
@@ -111,7 +108,7 @@ const DWVComponent = props => {
   }
 
   return (
-    <Dialog fullScreen open={open} onClose={() => onClose(view)}>
+    <Dialog fullScreen open={open} onClose={onClose}>
       {!showCropped ? (
         <div
           id='dwv'
@@ -141,7 +138,7 @@ const DWVComponent = props => {
             />
           </div>
           <div>
-            <Button onClick={() => onClose(view)}>Cancel</Button>
+            <Button onClick={onClose}>Cancel</Button>
             <Button
               onClick={() => setCrop(stateCrop)}
               disabled={stateCrop === null}>

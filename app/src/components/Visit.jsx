@@ -7,12 +7,13 @@ import Promise from 'bluebird'
 import Button from '@material-ui/core/Button'
 import Card from '@material-ui/core/Card'
 import CircularProgress from '@material-ui/core/CircularProgress'
+import Dialog from '@material-ui/core/Dialog'
 import Grid from '@material-ui/core/Grid'
 import MenuItem from '@material-ui/core/MenuItem'
 import Select from '@material-ui/core/Select'
 import Typography from '@material-ui/core/Typography'
 
-import ImagePredictor from 'HNA/components/ImagePredictor.jsx'
+import BulkSelector from 'HNA/components/BulkSelector.jsx'
 
 const Visit = (props) => {
   const [isLoading, setIsLoading] = useState(true)
@@ -22,6 +23,8 @@ const Visit = (props) => {
   const [isPredicting, setIsPredicting] = useState(false)
   const [predictions, setPredictions] = useState([])
   const [selectedPred, setSelectedPred] = useState('')
+
+  const [dialogOpen, setDialogOpen] = useState(false)
 
   const { id, handleResult } = props
 
@@ -39,7 +42,7 @@ const Visit = (props) => {
   const fetchPictures = () => {
     app
       .service('images')
-      .find({ query: { visit_id: id } })
+      .find({ query: { visit_id: id, $limit: 100 } })
       .then((res) => {
         return res.data
       })
@@ -157,6 +160,8 @@ const Visit = (props) => {
       })
   }
 
+  const onClose = () => setDialogOpen(false)
+
   const renderVisitInfo = () => {
     return Object.keys(data).map((key) => (
       <div key={key}>
@@ -187,6 +192,18 @@ const Visit = (props) => {
       </Grid>
     ))
 
+  const renderUploadDialog = () => {
+    return (
+      <Dialog open={dialogOpen} onClose={onClose} maxWidth='xl' fullWidth>
+        <BulkSelector
+          visitId={id}
+          onClose={onClose}
+          fetchPictures={fetchPictures}
+        />
+      </Dialog>
+    )
+  }
+
   if (isLoading) {
     return (
       <Card style={{ marginTop: '20px' }}>
@@ -195,67 +212,71 @@ const Visit = (props) => {
     )
   }
   return (
-    <Grid container item spacing={4} alignItems='stretch'>
-      <Grid item xs={12} sm={6}>
-        <Card style={{ height: '100%' }}>
-          <div style={{ padding: '20px' }}>{renderVisitInfo()}</div>
-        </Card>
-      </Grid>
-      <Grid item xs={12} sm={6}>
-        <Card style={{ height: '100%' }}>
-          <div style={{ padding: '20px' }}>
-            <Typography variant='h4'>Run Algorithm</Typography>
-            <div
-              style={{
-                width: '100%',
-                display: 'flex',
-                justifyContent: 'center',
-              }}>
-              <Select
-                value={selectedPred}
-                onChange={(e) => setSelectedPred(e.target.value)}>
-                {predictions.map((pred) => (
-                  <MenuItem key={pred} value={pred}>
-                    {pred}
-                  </MenuItem>
-                ))}
-              </Select>
-              {isPredicting ? (
-                <CircularProgress />
-              ) : (
-                <Button
-                  disabled={selectedPred === ''}
-                  onClick={predict}
-                  variant='contained'>
-                  RUN
+    <div>
+      {renderUploadDialog()}
+      <Grid container item spacing={4} alignItems='stretch'>
+        <Grid item xs={12} sm={6}>
+          <Card style={{ height: '100%' }}>
+            <div style={{ padding: '20px' }}>{renderVisitInfo()}</div>
+          </Card>
+        </Grid>
+        <Grid item xs={12} sm={6}>
+          <Card style={{ height: '100%' }}>
+            <div style={{ padding: '20px' }}>
+              <Typography variant='h4'>Run Algorithm</Typography>
+              <div
+                style={{
+                  width: '100%',
+                  display: 'flex',
+                  justifyContent: 'center',
+                  padding: '20px',
+                }}>
+                <Select
+                  value={selectedPred}
+                  onChange={(e) => setSelectedPred(e.target.value)}>
+                  {predictions.map((pred) => (
+                    <MenuItem key={pred} value={pred}>
+                      {pred}
+                    </MenuItem>
+                  ))}
+                </Select>
+                {isPredicting ? (
+                  <CircularProgress />
+                ) : (
+                  <Button
+                    disabled={selectedPred === ''}
+                    onClick={predict}
+                    variant='contained'>
+                    RUN
+                  </Button>
+                )}
+              </div>
+              <div
+                style={{
+                  width: '100%',
+                  display: 'flex',
+                  justifyContent: 'center',
+                  padding: '20px',
+                }}>
+                <Button onClick={() => setDialogOpen(true)} variant='outlined'>
+                  Upload
                 </Button>
-              )}
+              </div>
             </div>
-          </div>
-        </Card>
+          </Card>
+        </Grid>
+        <Grid item xs={12}>
+          <Card>
+            <div style={{ padding: '20px', minHeight: '100px' }}>
+              <Typography variant='h4'>Uploaded Images</Typography>
+              <Grid container spacing={4}>
+                {renderImages()}
+              </Grid>
+            </div>
+          </Card>
+        </Grid>
       </Grid>
-      <Grid item xs={12}>
-        <Card>
-          <div style={{ padding: '20px' }}>
-            <Typography variant='h4'>Uploaded Images</Typography>
-            <Grid container spacing={4}>
-              {renderImages()}
-            </Grid>
-          </div>
-        </Card>
-      </Grid>
-      <Grid item xs={12} sm={6}>
-        <Card style={{ height: '100%' }}>
-          <div style={{ padding: '20px' }}>
-            <ImagePredictor
-              visitId={id}
-              handleResult={handleResult}
-              fetchPictures={fetchPictures}
-            />
-          </div>
-        </Card>
-      </Grid>
-    </Grid>
+    </div>
   )
 }
 
