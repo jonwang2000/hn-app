@@ -1,6 +1,12 @@
-# Docker Feathers React and MaterialUI
+# hn-app
 
-Boilerplate code for a simple web app using [Docker](https://www.docker.com/), [FeathersJS](https://feathersjs.com/), [React](https://reactjs.org/), and [MaterialUI](https://material-ui.com/).
+Uses [Docker](https://www.docker.com/), [FeathersJS](https://feathersjs.com/), [React](https://reactjs.org/), and [MaterialUI](https://material-ui.com/).
+
+Utilizes [dwv](https://github.com/ivmartel/dwv) and [react-image-crop](https://github.com/DominicTobias/react-image-crop) for DICOM processing.
+
+## To do
+
+Needs heavy work on styling. Functionality was the main focus so far.
 
 ## Requirements
 
@@ -27,11 +33,11 @@ docker-compose -f docker-compose.yml logs --follow api app postgres
 
 Open postgres database:
 ```
-docker-compose -f docker-compose.yml exec postgres psql -U project-name project-name
+npm run psql
 ```
 
 ## Customization and Production deployment
-Update `project-name` in the package.json and docker-compose yml files to desired project name.
+Update `hn-app` in the package.json and docker-compose yml files to desired project name.
 
 For production deployment, assuming you have an SSL certificate and want to serve via HTTPS, update the `.env` to point the `API_BASE_URL` to your domain name and set the `API_PORT` to another port like `4003` so that we can have the server listen on `4001` instead.
 ```
