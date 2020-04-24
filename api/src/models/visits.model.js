@@ -83,7 +83,6 @@ module.exports = function(app) {
         allowNull: false,
         defaultValue: false
       }
-      // TODO: IMAGES
     },
     {
       hooks: {

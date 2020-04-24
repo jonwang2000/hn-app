@@ -1,3 +1,7 @@
+//  useResponsive.js
+
+//  Hook-based replacement when migrating base to function intead of class components
+
 import React from 'react'
 import includes from 'lodash/includes'
 

@@ -1,3 +1,7 @@
+//  Patients.jsx
+
+//  Basically the homepage, TODO: maybe rename/reorganize this component
+
 import React, { useEffect, useState } from 'react'
 
 import Button from '@material-ui/core/Button'
@@ -11,6 +15,7 @@ import app from 'HNA/feathers-client.js'
 import DataTable from 'HNA/components/DataTable.jsx'
 import PatientsDialog from 'HNA/components/PatientsDialog.jsx'
 
+//  TODO: Columns need improvement
 const patientColumns = [
   { name: 'study_id', label: 'Study Id' },
   { name: 'sex', label: 'Sex' }

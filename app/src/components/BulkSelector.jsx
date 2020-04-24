@@ -1,3 +1,11 @@
+//  BulkSelector.jsx
+
+//  Passes DICOM to DWVComponent for initial crop, then renders
+//  DICOMs on a hidden canvas and crops with standard canvas API
+//  before returning as PNG dataURLs
+
+//  TODO: Really messy code, the hidden dwv canvas is pretty 'hacky' and could use another look.
+
 import React, { useEffect, useState } from 'react'
 
 import app from 'HNA/feathers-client.js'
@@ -17,8 +25,7 @@ const BulkSelector = (props) => {
   const { onClose, fetchPictures, visitId } = props
 
   const [bulkFiles, setBulkFiles] = useState([])
-
-  const [isLoading, setIsLoading] = useState(false)
+  const [isLoading, setIsLoading] = useState(false) // For CircularProgress
 
   const [dwvDialogOpen, setDwvDialogOpen] = useState(false)
   const [stateCrop, setStateCrop] = useState(null)
@@ -103,8 +110,8 @@ const BulkSelector = (props) => {
     )
   }
 
+  // Upload all images with tags
   const uploadUris = () => {
-    // Upload all images with tags
     setImgDialogOpen(false)
     const uploadPromises = uris.map((uri) =>
       upload({ visit_id: visitId, ...uri })
@@ -185,6 +192,8 @@ const BulkSelector = (props) => {
             style={{ width: '80%', border: '1px solid #000' }}
           />
           <select onChange={(e) => handleSelect(e, uri.uri)}>
+            {' '}
+            //TODO: Pull this from somewhere else instead of hardcoding
             <option value={''}>N/A</option>
             <option value='l_transverse'>Left Transverse</option>
             <option value='l_sagittal'>Left Sagittal</option>

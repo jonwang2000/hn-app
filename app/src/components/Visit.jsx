@@ -1,3 +1,10 @@
+//  Visit.jsx
+
+//  The bulk of the work is done here and in child components of Visit.
+//  Images are uploaded/categorized in BulkSelector and then predicted/displayed here.
+
+//  TODO: cleanup/styling, images should be displayed in a better format
+
 import React, { useEffect, useState } from 'react'
 
 import app from 'HNA/feathers-client.js'
@@ -67,7 +74,7 @@ const Visit = (props) => {
     if (data) fetchPictures()
   }, [data])
 
-  // Process and display runable algos
+  // Process and display runable algos TODO: better method than hard coding
   useEffect(() => {
     console.log(imgs, 'should process')
     if (imgs && imgs.length !== 0) {
@@ -94,6 +101,8 @@ const Visit = (props) => {
     console.log(predictions)
   }, [predictions])
 
+  //  checks and changes usable prediction algos if all required image types are available
+  //  TODO: not sure if this is the best method, processing functionality needs cleanup
   const processPrediction = (imageTypes, includeTypes, predictionName) => {
     if (includeTypes.every((type) => imageTypes.includes(type))) {
       if (predictions.includes(predictionName)) {
@@ -107,6 +116,7 @@ const Visit = (props) => {
     }
   }
 
+  //  TODO: same as above
   const predict = () => {
     console.log(id)
     let fileIds = []
@@ -173,6 +183,8 @@ const Visit = (props) => {
     ))
   }
 
+  //  TODO: Display in a better, more legible format.
+  //  A suggestion was to do a table with image thumbnails that displays fullsize image when row clicked.
   const renderImages = () =>
     imgs.map((img) => (
       <Grid item xs={4} key={img.id}>

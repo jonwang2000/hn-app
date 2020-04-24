@@ -1,3 +1,10 @@
+//  DWVComponent.jsx
+
+//  Takes in given files (DICOMs) and then displays them in a react-image-crop cropper,
+//  where they are then saved as .png dataURLs.
+
+//  TODO: code definitely needs cleanup, styling for the dialogs needs heavy work
+
 import React, { useEffect, useState } from 'react'
 
 import Button from '@material-ui/core/Button'
@@ -11,17 +18,6 @@ import 'react-image-crop/dist/ReactCrop.css'
 // gui overrides, get element for dwv
 dwv.gui.getElement = dwv.gui.base.getElement
 
-/*
-  Overview/TODO:
-
-  Takes in given files (DICOMs) and then displays them in a react-image-crop cropper,
-  where they are then saved as .png dataURLs.
-
-  Currently really, really hacky code, styling is bad too.
-
-  The dwv canvas system really doesn't work well with the cropper.
-*/
-
 const DWVComponent = props => {
   const {
     stateCrop,
@@ -31,7 +27,6 @@ const DWVComponent = props => {
     files
   } = props
 
-  // State hooks
   const [dwvApp, setDwvApp] = useState(null)
   const [crop, setCrop] = useState(null)
   const [croppedData, setCroppedData] = useState(null)

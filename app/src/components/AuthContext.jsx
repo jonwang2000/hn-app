@@ -1,3 +1,7 @@
+//  AuthContext.jsx
+
+//  Maintains feathers jwt authentication state throughout application
+
 import React, { createContext, useEffect, useState } from 'react'
 
 import app from 'HNA/feathers-client.js'

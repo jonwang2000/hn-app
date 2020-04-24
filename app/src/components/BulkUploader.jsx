@@ -1,8 +1,7 @@
 import React from 'react'
 
-import Dropzone from 'react-dropzone'
-
 import Button from '@material-ui/core/Button'
+import Dropzone from 'react-dropzone'
 
 const activeStyle = {
   textAlign: 'center',

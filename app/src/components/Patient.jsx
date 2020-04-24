@@ -1,3 +1,7 @@
+//  Patient.jsx
+
+//  Fetches and displays patient info but really serves as a wrapper for Visit component
+
 import React, { useEffect, useState } from 'react'
 
 import Button from '@material-ui/core/Button'
@@ -12,6 +16,7 @@ import DataTable from 'HNA/components/DataTable.jsx'
 import PatientDialog from 'HNA/components/PatientDialog.jsx'
 import Visit from 'HNA/components/Visit.jsx'
 
+//  TODO: columns need improvement
 const visitsColumns = [
   { name: 'id', label: 'Visit Id' },
   { name: 'created_at', label: 'Date' },
